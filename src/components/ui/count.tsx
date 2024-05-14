@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 
-export default function Counter() {
+// export default function Counter() {
+const Counter: React.FC = () => {
     // const fetchCta = await fetchCt()
 
     const [count, setCount] = useState(0)
@@ -25,3 +26,4 @@ export default function Counter() {
         </div>
     )
 }
+export default Counter
