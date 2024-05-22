@@ -9,6 +9,8 @@ import {
     setDoc,
     addDoc,
     Timestamp,
+    deleteDoc,
+    updateDoc,
 } from 'firebase/firestore'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -94,6 +96,17 @@ export async function fetchTodo(id: string) {
     }
 }
 
+export async function deleteTodo(id: string) {
+    const todo = await fetchTodo(id)
+
+    if (todo === null) {
+        return null
+    }
+
+    await deleteDoc(doc(db, 'todos_info', id))
+    return todo
+}
+
 export async function addTodo({ title }: { title: string }) {
     const newTodoRef = doc(collection(db, 'todos_info'))
     // console.log(title)
@@ -108,7 +121,31 @@ export async function addTodo({ title }: { title: string }) {
 
     await setDoc(newTodoRef, newTodo)
 
-    return newTodo
+    return {
+        id: newTodoRef.id,
+        title: title,
+        is_done: false,
+        create_at: createdAt.toDate(),
+    }
+}
+
+export async function editTodo(
+    id: string,
+    { title, is_done }: { title: string; is_done: boolean }
+) {
+    const todo = await fetchTodo(id)
+
+    if (todo === null) {
+        return null
+    }
+
+    const todoRef = doc(db, 'todos_info', id)
+
+    const editedTodo = await updateDoc(todoRef, {
+        title: title,
+        is_done: is_done,
+    })
+    return editedTodo
 }
 
 export async function setCt(ct: number) {

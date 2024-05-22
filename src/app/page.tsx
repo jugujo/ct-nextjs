@@ -1,12 +1,12 @@
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card'
-import Counter from '../components/ui/count'
+// import {
+//     Card,
+//     CardContent,
+//     CardDescription,
+//     CardFooter,
+//     CardHeader,
+//     CardTitle,
+// } from '@/components/ui/card'
+// import Counter from '../components/ui/count'
 import fetchCt, { setCt } from '@/data/firestore'
 
 // import Image from 'next/image'
@@ -18,7 +18,8 @@ export default async function Home() {
 
     return (
         <main className="flex min-h-screen flex-col items-center p-24">
-            <Counter></Counter>
+            HOME
+            {/* <Counter></Counter>
             <button>test</button>
 
             <Card className="w-[350px]">
@@ -30,7 +31,7 @@ export default async function Home() {
                 </CardHeader>
                 <CardContent>{fetchCta}</CardContent>
                 <CardFooter className="flex justify-between"></CardFooter>
-            </Card>
+            </Card> */}
         </main>
     )
 }

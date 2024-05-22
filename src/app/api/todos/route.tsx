@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { addTodo, fetchTodos } from '@/data/firestore'
 
+//全体検索
 export async function GET() {
     const todos = await fetchTodos()
 
@@ -11,25 +12,16 @@ export async function GET() {
     return NextResponse.json(resopnse, { status: 200 })
 }
 
+//追加
 export async function POST(request: NextRequest) {
     const { title } = await request.json()
-    const rtn = await addTodo({ title })
-    // console.log(title)
-    console.log(request)
-    // const data = await request.json()
 
-    // const newTodo = {
-    //     id: '4',
-    //     title: 'test_newtitle',
-    //     is_done: false,
-    // }
+    const addedTodo = await addTodo({ title })
 
-    // const resopnse = {
-    //     message: 'test_add',
-    //     data: 'testdata',
-    // }
+    const resopnse = {
+        message: 'add test data',
+        data: addedTodo,
+    }
 
-    return NextResponse.json(rtn, { status: 200 })
-
-    // return Response.json(title)
+    return Response.json(resopnse, { status: 201 })
 }

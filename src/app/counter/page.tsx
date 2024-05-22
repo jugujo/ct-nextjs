@@ -17,25 +17,9 @@ async function getInitCount() {
     return 10
 }
 
-async function getData() {
-    const res = await fetch('http://localhost:3000/api/todos')
-    // The return value is *not* serialized
-    // You can return Date, Map, Set, etc.
-
-    if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data')
-    }
-
-    return res.json()
-}
-
 export default async function TodoPage() {
     const initCnt = await getInitCount()
     console.log('initCnt:' + initCnt)
-
-    const response = await getData()
-    console.log('datas:' + response.data)
     const fetchCta: number = await fetchCt()
 
     await setCt(fetchCta + 1)
