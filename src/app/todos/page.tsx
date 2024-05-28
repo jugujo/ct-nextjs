@@ -6,8 +6,9 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
-import Counter from '../../components/counter'
+import Counter from '@/components/counter'
 import fetchCt, { setCt } from '@/data/firestore'
+import TodosTable from '@/components/todos/todoTable'
 
 // import Image from 'next/image'
 
@@ -19,8 +20,6 @@ async function getInitCount() {
 
 async function getData() {
     const res = await fetch('http://localhost:3000/api/todos')
-    // The return value is *not* serialized
-    // You can return Date, Map, Set, etc.
 
     if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
@@ -46,6 +45,7 @@ export default async function TodoPage() {
                 <h1>子供パラメータ</h1>
             </Counter>
             <button>test</button>
+            <TodosTable todos={response.data ?? []}></TodosTable>
 
             <Card className="w-[350px]">
                 <CardHeader>

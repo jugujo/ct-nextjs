@@ -116,7 +116,7 @@ export async function addTodo({ title }: { title: string }) {
         id: newTodoRef.id,
         title: title,
         is_done: false,
-        create_at: createdAt,
+        created_at: createdAt,
     }
 
     await setDoc(newTodoRef, newTodo)
@@ -125,7 +125,7 @@ export async function addTodo({ title }: { title: string }) {
         id: newTodoRef.id,
         title: title,
         is_done: false,
-        create_at: createdAt.toDate(),
+        created_at: createdAt.toDate(),
     }
 }
 
