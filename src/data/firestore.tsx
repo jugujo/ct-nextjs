@@ -32,14 +32,14 @@ let rtnStr: number
 
 export default async function fetchCt() {
     const querySnapshot = await getDocs(collection(db, 'ct_info'))
-    console.log('logggg')
+    // console.log('logggg')
     querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`)
+        // console.log(`${doc.id} => ${doc.data()}`)
         rtnStr = doc.data()['ct_no']
-        console.log(rtnStr)
+        // console.log(rtnStr)
         // return rtnStr + 1
     })
-    console.log('test')
+    // console.log('test')
 
     return rtnStr
 }
@@ -57,7 +57,7 @@ export async function fetchTodos() {
     }[] = []
 
     querySnapshot.forEach((doc) => {
-        console.log(doc.id, '⇒', doc.data())
+        // console.log(doc.id, '⇒', doc.data())
         const todo = {
             id: doc.id,
             title: doc.data()['title'],
@@ -78,7 +78,7 @@ export async function fetchTodo(id: string) {
     const docRef = doc(db, 'todos_info', id)
     const docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
-        console.log('Document data:', docSnap.data())
+        // console.log('Document data:', docSnap.data())
         const todo = {
             id: docSnap.id,
             title: docSnap.data()['title'],

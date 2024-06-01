@@ -12,7 +12,7 @@ import fetchCt, { setCt } from '@/data/firestore'
 // import Image from 'next/image'
 
 async function getInitCount() {
-    console.log('')
+    // console.log('')
     await new Promise((f) => setTimeout(f, 1000))
     return 10
 }

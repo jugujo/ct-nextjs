@@ -13,13 +13,13 @@ import TodosTable from '@/components/todos/todoTable'
 // import Image from 'next/image'
 
 async function getInitCount() {
-    console.log('')
+    // console.log('')
     await new Promise((f) => setTimeout(f, 1000))
     return 10
 }
 
 async function getData() {
-    const res = await fetch('http://localhost:3000/api/todos')
+    const res = await fetch(`${process.env.BASE_URL}/api/todos`)
 
     if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
@@ -34,7 +34,7 @@ export default async function TodoPage() {
     console.log('initCnt:' + initCnt)
 
     const response = await getData()
-    console.log('datas:' + response.data)
+    // console.log('datas:' + response.data)
     const fetchCta: number = await fetchCt()
 
     await setCt(fetchCta + 1)

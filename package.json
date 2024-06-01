@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "@nextui-org/button": "^2.0.31",
+    "@nextui-org/input": "^2.2.0",
+    "@nextui-org/popover": "^2.1.23",
     "@nextui-org/system": "^2.1.2",
     "@nextui-org/table": "^2.0.33",
     "@nextui-org/theme": "^2.2.3",
