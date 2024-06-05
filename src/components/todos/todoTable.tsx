@@ -11,6 +11,8 @@ import {
 import { Input } from '@nextui-org/input'
 import { Button } from '@nextui-org/button'
 import { Popover, PopoverTrigger, PopoverContent } from '@nextui-org/popover'
+import { Spinner } from '@nextui-org/spinner'
+import { useRouter } from 'next/navigation'
 
 import { Timestamp } from 'firebase/firestore'
 import { useState } from 'react'
@@ -27,21 +29,28 @@ export type Todo = {
 const TodosTable = ({ todos }: { todos: Todo[] }) => {
     const [todoAddEnable, setTodoAddEnable] = useState(false)
     const [todoAddText, setTodoAddText] = useState('')
+    const router = useRouter()
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
     const addTodo = async () => {
-        alert('ss2')
         if (todoAddText.length < 1) {
-            alert('ss3')
+            console.log('入力して')
             return
         }
+        setTodoAddEnable(false)
+        setIsLoading(true)
 
         await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/todos`, {
             method: 'post',
             body: JSON.stringify({ title: todoAddText }),
             cache: 'no-store',
         })
-        alert('ss4')
         console.log(`追加完了：${todoAddText}`)
+        setTodoAddText('')
+        router.refresh()
+        setIsLoading(false)
     }
+
     const todoRow = (todo: Todo) => {
         return (
             <TableRow key={todo.id}>
@@ -71,6 +80,7 @@ const TodosTable = ({ todos }: { todos: Todo[] }) => {
             </Popover>
         )
     }
+
     return (
         <div>
             <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
@@ -88,7 +98,6 @@ const TodosTable = ({ todos }: { todos: Todo[] }) => {
                         color="warning"
                         className="h-14"
                         onPress={async () => {
-                            alert('ss')
                             await addTodo()
                         }}
                     >
@@ -98,6 +107,8 @@ const TodosTable = ({ todos }: { todos: Todo[] }) => {
                     disAddButton()
                 )}
             </div>
+            {isLoading && <Spinner color="warning" />}
+
             <Table aria-label="Example table with dynamic content">
                 <TableHeader>
                     <TableColumn>ID</TableColumn>

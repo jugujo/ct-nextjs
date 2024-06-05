@@ -734,7 +734,7 @@
     "@nextui-org/shared-utils" "2.0.5"
     "@nextui-org/system-rsc" "2.1.1"
 
-"@nextui-org/spinner@2.0.29":
+"@nextui-org/spinner@^2.0.29", "@nextui-org/spinner@2.0.29":
   version "2.0.29"
   resolved "https://registry.npmjs.org/@nextui-org/spinner/-/spinner-2.0.29.tgz"
   integrity sha512-W9WXguTIQVbnCx5eus3DwJYX7mzDLK3xp6QRU/knmxm3HJjCvHlexw6TgXMEJfTcCl83Sh8CDYrUDSEhCivMWQ==
