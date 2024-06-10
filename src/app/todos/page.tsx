@@ -19,7 +19,9 @@ async function getInitCount() {
 }
 
 async function getData() {
-    const res = await fetch(`${process.env.BASE_URL}/api/todos`)
+    const res = await fetch(`${process.env.BASE_URL}/api/todos`, {
+        cache: 'no-cache',
+    })
 
     if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
