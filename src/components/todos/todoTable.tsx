@@ -19,6 +19,14 @@ import {
     // DropdownSection,
     DropdownItem,
 } from '@nextui-org/dropdown'
+import {
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    useDisclosure,
+} from '@nextui-org/modal'
 
 import React from 'react'
 import { ToastContainer, toast } from 'react-toastify'
@@ -38,10 +46,25 @@ export type Todo = {
     created_at: Timestamp
 }
 
+export type ModalType = 'detail' | 'edit' | 'delete'
+
+export type ModalStatusType = {
+    selectedTodo: Todo | null
+    modalType: ModalType
+}
+
 // export default function Counter() {
 const TodosTable = ({ todos }: { todos: Todo[] }) => {
     const [todoAddEnable, setTodoAddEnable] = useState(false)
+    const { isOpen, onOpen, onOpenChange } = useDisclosure()
+    // const [backdrop, setBackdrop] = useState('opaque')
     const [todoAddText, setTodoAddText] = useState('')
+    const [currentModalStatus, setCurrentModalStatus] =
+        useState<ModalStatusType>({
+            selectedTodo: null,
+            modalType: 'detail' as ModalType,
+        })
+
     const router = useRouter()
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const notify = (msg: string) => toast(msg)
@@ -88,10 +111,21 @@ const TodosTable = ({ todos }: { todos: Todo[] }) => {
                                     <VerticalDotsIcon className="text-default-300" />
                                 </Button>
                             </DropdownTrigger>
-                            <DropdownMenu>
-                                <DropdownItem>View</DropdownItem>
-                                <DropdownItem>Edit</DropdownItem>
-                                <DropdownItem>Delete</DropdownItem>
+                            <DropdownMenu
+                                onAction={(parm) => {
+                                    console.log(
+                                        parm + `test:${parm},id:${todo.id}`
+                                    )
+                                    setCurrentModalStatus({
+                                        selectedTodo: todo,
+                                        modalType: parm as ModalType,
+                                    })
+                                    onOpen()
+                                }}
+                            >
+                                <DropdownItem key="detail">詳細</DropdownItem>
+                                <DropdownItem key="edit">修正</DropdownItem>
+                                <DropdownItem key="delete">削除</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </div>
@@ -116,6 +150,50 @@ const TodosTable = ({ todos }: { todos: Todo[] }) => {
                     </div>
                 </PopoverContent>
             </Popover>
+        )
+    }
+
+    const modalComp = () => {
+        return (
+            <div>
+                <Button onPress={onOpen}>Open Modal</Button>
+                <Modal
+                    backdrop="blur"
+                    isOpen={isOpen}
+                    onOpenChange={onOpenChange}
+                >
+                    <ModalContent>
+                        {(onClose) => (
+                            <>
+                                <ModalHeader className="flex flex-col gap-1">
+                                    {currentModalStatus.modalType}
+                                </ModalHeader>
+                                <ModalBody>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur
+                                        adipiscing elit. Nullam pulvinar risus
+                                        non risus hendrerit venenatis.
+                                        Pellentesque sit amet hendrerit risus,
+                                        sed porttitor quam.
+                                    </p>
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button
+                                        color="danger"
+                                        variant="light"
+                                        onPress={onClose}
+                                    >
+                                        Close
+                                    </Button>
+                                    <Button color="primary" onPress={onClose}>
+                                        Action
+                                    </Button>
+                                </ModalFooter>
+                            </>
+                        )}
+                    </ModalContent>
+                </Modal>
+            </div>
         )
     }
 
@@ -148,6 +226,7 @@ const TodosTable = ({ todos }: { todos: Todo[] }) => {
             <div className="h-9">
                 {isLoading && <Spinner size="sm" color="warning" />}
             </div>
+            {modalComp()}
             <Table aria-label="Example table with dynamic content">
                 <TableHeader>
                     <TableColumn>ID</TableColumn>

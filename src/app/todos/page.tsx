@@ -33,7 +33,7 @@ async function getData() {
 
 export default async function TodoPage() {
     const initCnt = await getInitCount()
-    console.log('initCnt:' + initCnt)
+    console.log('initCntnew:' + initCnt)
 
     const response = await getData()
     // console.log('datas:' + response.data)
