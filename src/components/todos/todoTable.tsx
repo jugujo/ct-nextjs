@@ -1,5 +1,6 @@
 'use client'
-
+import { Todo, ModalType, ModalStatusType } from '@/data/types'
+import TodoModal from '@/components/todos/todoModal'
 import {
     Table,
     TableHeader,
@@ -16,17 +17,9 @@ import {
     Dropdown,
     DropdownTrigger,
     DropdownMenu,
-    // DropdownSection,
     DropdownItem,
 } from '@nextui-org/dropdown'
-import {
-    Modal,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    useDisclosure,
-} from '@nextui-org/modal'
+import { Modal, ModalContent, useDisclosure } from '@nextui-org/modal'
 
 import React from 'react'
 import { ToastContainer, toast } from 'react-toastify'
@@ -34,26 +27,9 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import { useRouter } from 'next/navigation'
 
-import { Timestamp } from 'firebase/firestore'
 import { useState } from 'react'
 import { VerticalDotsIcon } from '../Icons'
-// import { Timestamp } from 'firebase/firestore'
 
-export type Todo = {
-    id: string
-    title: string
-    is_done: boolean
-    created_at: Timestamp
-}
-
-export type ModalType = 'detail' | 'edit' | 'delete'
-
-export type ModalStatusType = {
-    selectedTodo: Todo | null
-    modalType: ModalType
-}
-
-// export default function Counter() {
 const TodosTable = ({ todos }: { todos: Todo[] }) => {
     const [todoAddEnable, setTodoAddEnable] = useState(false)
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -154,9 +130,12 @@ const TodosTable = ({ todos }: { todos: Todo[] }) => {
     }
 
     const modalComp = () => {
+        // if (currentModalStatus.selectedTodo == null) {
+        //     return null
+        // }
+
         return (
             <div>
-                <Button onPress={onOpen}>Open Modal</Button>
                 <Modal
                     backdrop="blur"
                     isOpen={isOpen}
@@ -164,32 +143,11 @@ const TodosTable = ({ todos }: { todos: Todo[] }) => {
                 >
                     <ModalContent>
                         {(onClose) => (
-                            <>
-                                <ModalHeader className="flex flex-col gap-1">
-                                    {currentModalStatus.modalType}
-                                </ModalHeader>
-                                <ModalBody>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit. Nullam pulvinar risus
-                                        non risus hendrerit venenatis.
-                                        Pellentesque sit amet hendrerit risus,
-                                        sed porttitor quam.
-                                    </p>
-                                </ModalBody>
-                                <ModalFooter>
-                                    <Button
-                                        color="danger"
-                                        variant="light"
-                                        onPress={onClose}
-                                    >
-                                        Close
-                                    </Button>
-                                    <Button color="primary" onPress={onClose}>
-                                        Action
-                                    </Button>
-                                </ModalFooter>
-                            </>
+                            <TodoModal
+                                todo={currentModalStatus.selectedTodo}
+                                modalType={currentModalStatus.modalType}
+                                onClose={onClose}
+                            ></TodoModal>
                         )}
                     </ModalContent>
                 </Modal>
