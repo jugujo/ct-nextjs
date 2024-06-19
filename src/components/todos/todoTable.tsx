@@ -71,6 +71,30 @@ const TodosTable = ({ todos }: { todos: Todo[] }) => {
         notify('追加完了！！')
     }
 
+    const editTodo = async (
+        id: string,
+        editedTitle: string,
+        editedIsDone: boolean
+    ) => {
+        if (editedTitle.length < 1) {
+            console.log('入力して')
+            return
+        }
+
+        await new Promise((f) => setTimeout(f, 1000))
+
+        await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/todos/${id}`, {
+            method: 'post',
+            body: JSON.stringify({ title: editedTitle, is_done: editedIsDone }),
+            cache: 'no-store',
+        })
+        console.log(`更新完了：${editedTitle}`)
+
+        router.refresh()
+
+        notify('更新完了！！')
+    }
+
     const todoRow = (todo: Todo) => {
         return (
             <TableRow key={todo.id}>
@@ -147,6 +171,10 @@ const TodosTable = ({ todos }: { todos: Todo[] }) => {
                                 todo={currentModalStatus.selectedTodo}
                                 modalType={currentModalStatus.modalType}
                                 onClose={onClose}
+                                onEdit={async (id, title, is_done) => {
+                                    await editTodo(id, title, is_done)
+                                    onClose()
+                                }}
                             ></TodoModal>
                         )}
                     </ModalContent>
