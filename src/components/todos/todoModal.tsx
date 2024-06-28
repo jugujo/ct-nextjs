@@ -14,11 +14,13 @@ const TodoModal = ({
     modalType,
     onClose,
     onEdit,
+    onDelete,
 }: {
     todo: Todo | null
     modalType: ModalType
     onClose: () => void
     onEdit: (id: string, title: string, is_done: boolean) => void
+    onDelete: (id: string) => void
 }) => {
     console.log('todo２:' + todo?.id)
 
@@ -29,30 +31,38 @@ const TodoModal = ({
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
+    let createdAt = null
+    if (todo?.created_at != null) {
+        createdAt = new Date(todo?.created_at.seconds * 1000)
+        createdAt = createdAt.toLocaleDateString('ja')
+    }
+
     const DetailModal = () => {
         return (
             <>
-                <ModalHeader className="flex flex-col gap-1">詳細</ModalHeader>
+                <ModalHeader className="flex flex-col gap-1">修正</ModalHeader>
                 <ModalBody>
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Nullam pulvinar risus non risus hendrerit venenatis.
-                        Pellentesque sit amet hendrerit risus, sed porttitor
-                        quam.
+                        <span className="font-bold">id : </span>
+                        {todo?.id}
+                    </p>
+                    <p>
+                        <span className="font-bold">内容 : </span>
+                        {title}
+                    </p>
+                    <p>
+                        <span className="font-bold">完了 :</span>
+                        {`${is_done ? 'やった' : 'やってない'}`}
+                    </p>
+
+                    <p>
+                        <span className="font-bold">作成日 :</span>
+                        {`${createdAt}`}
                     </p>
                 </ModalBody>
                 <ModalFooter>
-                    <Button
-                        color="danger"
-                        variant="light"
-                        onPress={() => {
-                            onEdit(todo?.id + '', title + '', is_done)
-                        }}
-                    >
-                        Close
-                    </Button>
-                    <Button color="primary" onPress={onClose}>
-                        Action
+                    <Button disabled color="default" onPress={onClose}>
+                        閉じる
                     </Button>
                 </ModalFooter>
             </>
@@ -60,12 +70,6 @@ const TodoModal = ({
     }
 
     const EditModal = () => {
-        let createdAt = null
-        if (todo?.created_at != null) {
-            createdAt = new Date(todo?.created_at.seconds * 1000)
-            createdAt = createdAt.toLocaleDateString('ja')
-        }
-
         return (
             <>
                 <ModalHeader className="flex flex-col gap-1">修正</ModalHeader>
@@ -135,19 +139,50 @@ const TodoModal = ({
                 <ModalHeader className="flex flex-col gap-1">削除</ModalHeader>
                 <ModalBody>
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Nullam pulvinar risus non risus hendrerit venenatis.
-                        Pellentesque sit amet hendrerit risus, sed porttitor
-                        quam.
+                        <span className="font-bold">id : </span>
+                        {todo?.id}
+                    </p>
+                    <p>
+                        <span className="font-bold">内容 : </span>
+                        {title}
+                    </p>
+                    <p>
+                        <span className="font-bold">完了 :</span>
+                        {`${is_done ? 'やった' : 'やってない'}`}
+                    </p>
+
+                    <p>
+                        <span className="font-bold">作成日 :</span>
+                        {`${createdAt}`}
                     </p>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="danger" variant="light" onPress={onClose}>
-                        Close
-                    </Button>
-                    <Button color="primary" onPress={onClose}>
-                        Action
-                    </Button>
+                    {isLoading ? (
+                        <>
+                            <Button isLoading color="danger" variant="solid">
+                                削除
+                            </Button>
+                            <Button disabled color="default">
+                                閉じる
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <Button
+                                color="warning"
+                                variant="solid"
+                                onPress={() => {
+                                    setIsLoading(true)
+                                    onDelete(todo?.id + '')
+                                }}
+                            >
+                                削除
+                            </Button>
+                            <Button disabled color="default" onPress={onClose}>
+                                閉じる
+                            </Button>
+                        </>
+                    )}
                 </ModalFooter>
             </>
         )
