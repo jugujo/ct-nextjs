@@ -95,6 +95,25 @@ const TodosTable = ({ todos }: { todos: Todo[] }) => {
         notify('更新完了！！')
     }
 
+    const deleteTodo = async (id: string) => {
+        // if (id.length < 1) {
+        //     console.log('入力して')
+        //     return
+        // }
+
+        await new Promise((f) => setTimeout(f, 1000))
+
+        await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/todos/${id}`, {
+            method: 'delete',
+            cache: 'no-store',
+        })
+        console.log(`削除完了：${id}`)
+
+        router.refresh()
+
+        notify('削除完了！！')
+    }
+
     const todoRow = (todo: Todo) => {
         return (
             <TableRow key={todo.id}>
@@ -173,6 +192,10 @@ const TodosTable = ({ todos }: { todos: Todo[] }) => {
                                 onClose={onClose}
                                 onEdit={async (id, title, is_done) => {
                                     await editTodo(id, title, is_done)
+                                    onClose()
+                                }}
+                                onDelete={async (id) => {
+                                    await deleteTodo(id)
                                     onClose()
                                 }}
                             ></TodoModal>
